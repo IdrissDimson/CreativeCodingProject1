@@ -73,7 +73,7 @@ function displayParticles(particleX, particleY, particleShape) {
     }
   } else if (particleShape === 'ball') {
     // Bouncing ball particle
-    x = particles[0].position.x; // chaanging the x,y to the vector postitions allows the baall to move
+    x = particles[0].position.x; // changing the x,y to the vector postitions allows the baall to move
     y = particles[0].position.y;
 
     particles[0].display();
@@ -95,7 +95,7 @@ function ballCollision(paddleNumber) {
     y >= paddles[paddleNumber].y &&
     y <= paddles[paddleNumber].y + particles[paddleNumber].h
   ) {
-    textRef(32, 'So Close! ;)', width / 2, 50);
+    textRef(32, 'So Close! ;)', width / 2, 100);
   }
 }
 // Button function
@@ -123,7 +123,7 @@ function button(x, y, w, h, content) {
   textRef(32, content, x + w / 2, y + h / 2);
 }
 function draw() {
-  print(randomLocation);
+  // print(randomLocation);
   if (frameCount % 60 == 0 && timer > 0 && stage !== 1) {
     // staage one is the only stage without a timer
     // if the frameCount is divisible by 60, then a second has passed.
@@ -137,11 +137,10 @@ function draw() {
       stage = 6; // keep the project at the last stage
     }
   }
-
   if (buttonClicked === true) {
     // if the button is clicked, go to the next stage.
-    stage++;
     buttonClicked = false;
+    stage++;
   }
   switch (stage) {
     case 1: // Initial particle
@@ -151,9 +150,9 @@ function draw() {
       break;
     case 2: // Have the particles form a circle with one missing :O
       background(100);
-      textRef(32, timer, width / 1.2, 50);
+      textRef(32, timer, width / 1.2, 100);
       displayParticles(width / 2, height / 2, 'circle');
-      button(width / 1.25, 100, 150, 50, 'Skip >>');
+      button(width / 1.25, 150, 150, 50, 'Skip >>');
       break;
     case 3: // Have the particles in a diagonal line, with one out of order.
       // When the spacebar is pressed, have the particles line up temporaily, but have the displaced one slide back.
@@ -166,13 +165,14 @@ function draw() {
     case 4: // Have the particle never hit the top corner so the user watches forever >:)
       background(60);
       textRef(32, 'Watch until the ball hits the top corner ;)', width / 2, 50);
-      textRef(32, timer, width / 1.2, 50);
+      textRef(32, timer, width / 1.2, 100);
       displayParticles(width / 2, height / 2, 'ball');
-      button(width / 1.25, 100, 150, 50, 'Skip >>');
+      button(width / 1.25, 150, 150, 50, 'Skip >>');
       break;
     case 5: // Have a paddle that doesn't change the tragetory of the ball, but rather taunts the user
       background(60);
       textRef(32, timer, width / 1.2, 50);
+      textRef(32, 'Bounce the ball with the paddle!', width / 2, 50);
       displayParticles(width / 2, height / 2, 'ball');
       // have all the new paddles appear
       for (i = 0; i < paddles.length; i++) {
