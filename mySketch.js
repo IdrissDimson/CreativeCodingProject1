@@ -141,6 +141,7 @@ function draw() {
     // if the button is clicked, go to the next stage.
     buttonClicked = false;
     stage++;
+    timer = 30;
   }
   switch (stage) {
     case 1: // Initial particle
