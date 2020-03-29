@@ -10,7 +10,7 @@ function setup() {
   background(100);
   circleColor = color(255);
   buttonClicked = false;
-  stage = 4;
+  stage = 1;
   randomParticle = ceil(random(0, 19)); // chooses a random particle each time the program refreshes
   randomLocation = random(50, 100);
   // create 20 "particles" using the for loop.
