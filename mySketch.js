@@ -1,4 +1,4 @@
-let x, y, circleColor, stage, time, randomParticle, buttonClicked;
+let x, y, circleColor, stage, time, randomParticle, buttonClicked, ball;
 let randomLocation;
 let particles = [];
 let paddles = [];
@@ -10,13 +10,14 @@ function setup() {
   background(100);
   circleColor = color(255);
   buttonClicked = false;
-  stage = 1;
+  stage = 4;
   randomParticle = ceil(random(0, 19)); // chooses a random particle each time the program refreshes
   randomLocation = random(50, 100);
   // create 20 "particles" using the for loop.
   for (let i = 0; i < 20; i++) {
     particles[i] = new Particle(10, 10, circleColor);
   }
+  ball = new Particle(10, 10, circleColor);
   // create the first paddle for "pong"
   paddles[0] = new Paddle(randomLocation, height / 1.2, 100, 20);
 }
@@ -36,12 +37,16 @@ function displayParticles(particleX, particleY, particleShape) {
     // Inspired by a Stack Overflow answer on making a ring using shapes: https://stackoverflow.com/questions/55934842/making-a-ring-out-of-shapes-in-p5-js
     let curve = TWO_PI / particles.length; // Area of a circle in radians is 2 * pi.
     // Dividing it by the amount of particles gives us "slices" of the circle - like a regular pie
-    for (let i = 0; i < particles.length - 1; i++) {
+    for (let i = 0; i < particles.length; i++) {
+      if (i === particles.length - 1) {
+        particles[i].color = color(255, 0, 0);
+      } else {
+        particles[i].color = color(200);
+      }
       x = particleX + cos(curve * i) * particles[i].w * 30; // Starting from the center, have the circle draw particles on each of the "slices" on the
       // x- axis multiplied by the width of the particles so they don't over lap and multiplied again by 50 so we can get a wide circle
       y = particleY - sin(curve * i) * particles[i].w * 30; // the y-axis is similar to the x-axis,
       // however we are using sin on the y - axis for it to have the arc of a circle appear.
-      particles[i].color = color(200);
       particles[i].display();
       particles[i].animation();
     }
@@ -73,11 +78,11 @@ function displayParticles(particleX, particleY, particleShape) {
     }
   } else if (particleShape === 'ball') {
     // Bouncing ball particle
-    x = particles[0].position.x; // changing the x,y to the vector postitions allows the baall to move
-    y = particles[0].position.y;
+    x = ball.position.x; // changing the x,y to the vector postitions allows the baall to move
+    y = ball.position.y;
 
-    particles[0].display();
-    particles[0].update();
+    ball.display();
+    ball.update();
   } else {
     // the default look for the particle is a singular particle in the center.
     x = particleX;
@@ -114,6 +119,7 @@ function button(x, y, w, h, content) {
     mouseY >= y &&
     mouseY <= y + h
   ) {
+    textRef(32, 'Cant do that ;)', width / 2, 50);
     fill(100, 155, 155, 150);
     buttonClicked = true;
   }
@@ -138,9 +144,8 @@ function draw() {
     }
   }
   if (buttonClicked === true) {
-    // if the button is clicked, go to the next stage.
+    // if the button is clicked, DON'T go to the next stage.
     buttonClicked = false;
-    stage++;
     timer = 30;
   }
   switch (stage) {
@@ -226,9 +231,6 @@ class Particle {
     // Add the current speed to the position.
     this.position.add(this.velocity);
     if (this.position.x > width - this.w || this.position.x < 0 + this.w) {
-      if (this.position.x === 20) {
-        this.color = color(0, 255, 0);
-      }
       this.color = color(255);
       this.velocity.x *= -1;
     }
